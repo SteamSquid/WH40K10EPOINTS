@@ -1,4 +1,3 @@
-import pandas as pd
 import pdfquery
 import xml.etree.ElementTree as ET
 import io
@@ -18,6 +17,9 @@ def main():
 
     # The array that all the units will be stored in
     info = []
+
+    # the array that is used to pretty up the pages
+    infoTemp = []
 
     """
     # Opening the PDF and convert it to an XML
@@ -39,7 +41,7 @@ def main():
 
 
     
-    
+    # Grab everything from the page
     page = root[1][0]
 
     
@@ -49,22 +51,55 @@ def main():
             unit.append(text.text)
         info.append(unit)
 
+    # Pretty up the page
     info = [unit for unit in info if unit != []]
 
-    infoTemp = []
-
-    for unitbox in info:
-        unitbox = [element for element in unitbox if unitbox is not None]
-        infoTemp.append(unitbox)
-
-
-    for unitbox in info:
-        unitbox = [element for element in unitbox if unitbox != []]
-        infoTemp.append(unitbox)
     
-    for element in infoTemp:
-        print(element)
+    # Pretty up the units
+    for unitbox in info:
+        unitbox = [element for element in unitbox if element is not None]
+        infoTemp.append(unitbox)
 
+    # Pretty the unity even more
+    for unitbox in info:
+        unitbox = [element for element in unitbox if element != []]
+        infoTemp.append(unitbox)
+
+    info = infoTemp
+    
+    #clear infoTemp
+    infoTemp = []
+    
+    """
+    for thing in info:
+        print(thing)
+    """
+
+    # Correctly seprate the units
+    for unitbox in info:
+        tempBox = []
+        for element in unitbox:
+
+            tempElement = []
+
+            if element is not None and '.' in element:
+                tempElement = element.split('.')
+                tempElement=[thing for thing in tempElement if thing != '']
+            else:
+                tempBox.append(element)
+             
+            for ting in tempElement:
+                tempBox.append(ting)
+            
+
+
+        infoTemp.append(tempBox)
+    
+    info = infoTemp
+    
+    
+    for thing in info:
+        print(thing)
 
 if __name__ == "__main__":
     main()
