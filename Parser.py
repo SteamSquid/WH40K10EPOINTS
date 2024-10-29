@@ -44,8 +44,9 @@ def main():
     
     # Grab everything from the page
     #page = root[1][0]
+    i = 0
 
-    for page in root:
+    for page in root[1:]:
         page = page[0]
         pageInfo = []
 
@@ -85,11 +86,13 @@ def main():
                 for part in tempUnit:
                     tempBox.append(part)
 
-            # print("here")
             infoTemp.append(tempBox)
+
+        
 
         pageInfo = infoTemp
 
+        """
         infoTemp = []
 
         # Pretty up the units
@@ -97,11 +100,17 @@ def main():
             unitBox = [element for element in unitBox if element is not None]
         infoTemp.append(unitBox)
 
+        print(infoTemp)
+        
         book.append(infoTemp)
+        """
+
+        print(pageInfo)
+        
+
+        book.append(pageInfo)
+
     
-    
-    for element in book[0]:
-        print(element)
     
 
 if __name__ == "__main__":
