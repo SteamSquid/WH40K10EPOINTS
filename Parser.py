@@ -1,6 +1,7 @@
 import pdfquery
 import xml.etree.ElementTree as ET
 import io
+import csv
 
 
 def main():
@@ -91,9 +92,9 @@ def main():
         infoTemp = []
         book.append(pageInfo)
 
-    for page in book:
-        print(page)
-        print("\n\n")
+    with open('UnitBook.csv', 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerows(book)
     
     
 
