@@ -54,11 +54,6 @@ def main():
     # Pretty up the page
     info = [unit for unit in info if unit != []]
 
-    
-    # Pretty up the units
-    for unitbox in info:
-        unitbox = [element for element in unitbox if element is not None]
-        infoTemp.append(unitbox)
 
     # Pretty the unity even more
     for unitbox in info:
@@ -97,7 +92,15 @@ def main():
     
     info = infoTemp
     
+    infoTemp = []
     
+    # Pretty up the units
+    for unitbox in info:
+        unitbox = [element for element in unitbox if element is not None]
+        infoTemp.append(unitbox)
+
+
+    info = infoTemp
     for thing in info:
         print(thing)
 
