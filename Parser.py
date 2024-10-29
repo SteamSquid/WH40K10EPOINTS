@@ -16,11 +16,12 @@ def main():
     XML_Name="munitionsManual.xml"
 
     # The array that all the units will be stored in
-    info = []
+    pageInfo= []
 
     # the array that is used to pretty up the pages
     infoTemp = []
 
+    book = []
     """
     # Opening the PDF and convert it to an XML
     pdf = pdfquery.PDFQuery(PDF_Name)
@@ -42,67 +43,66 @@ def main():
 
     
     # Grab everything from the page
-    page = root[1][0]
+    #page = root[1][0]
 
+    for page in root:
+        page = page[0]
+        pageInfo = []
+
+        for unitBox in page:
+            unit=[]
+            for text in unitBox:
+                unit.append(text.text)
+            pageInfo.append(unit)
+
+        # Remove the emty arrays from the page
+        pageInfo = [unit for unit in pageInfo if unit != []]
+
+
+        # Remove the empty arrays from the unit box 
+        for unitBox in pageInfo:
+            unitBox = [element for element in unitBox if element != []]
+            infoTemp.append(unitBox)
+
+        pageInfo = infoTemp
+
+        #clear infoTemp
+        infoTemp = []
+
+        # Correctly seprate the units
+        for unitBox in pageInfo:
+            tempBox = []
+            for unit in unitBox:
+
+                tempUnit = []
+
+                if unit is not None and '.' in unit:
+                    tempUnit = unit.split('.')
+                    tempUnit=[part for part in tempUnit if part != '']
+                else:
+                    tempBox.append(unit)
+
+                for part in tempUnit:
+                    tempBox.append(part)
+
+            # print("here")
+            infoTemp.append(tempBox)
+
+        pageInfo = infoTemp
+
+        infoTemp = []
+
+        # Pretty up the units
+        for unitBox in pageInfo:
+            unitBox = [element for element in unitBox if element is not None]
+        infoTemp.append(unitBox)
+
+        book.append(infoTemp)
     
-    for unit_box in page:
-        unit=[]
-        for text in unit_box:
-            unit.append(text.text)
-        info.append(unit)
-
-    # Pretty up the page
-    info = [unit for unit in info if unit != []]
-
-
-    # Pretty the unity even more
-    for unitbox in info:
-        unitbox = [element for element in unitbox if element != []]
-        infoTemp.append(unitbox)
-
-    info = infoTemp
     
-    #clear infoTemp
-    infoTemp = []
+    for element in book[0]:
+        print(element)
     
-    """
-    for thing in info:
-        print(thing)
-    """
-
-    # Correctly seprate the units
-    for unitbox in info:
-        tempBox = []
-        for element in unitbox:
-
-            tempElement = []
-
-            if element is not None and '.' in element:
-                tempElement = element.split('.')
-                tempElement=[thing for thing in tempElement if thing != '']
-            else:
-                tempBox.append(element)
-             
-            for ting in tempElement:
-                tempBox.append(ting)
-            
-
-
-        infoTemp.append(tempBox)
-    
-    info = infoTemp
-    
-    infoTemp = []
-    
-    # Pretty up the units
-    for unitbox in info:
-        unitbox = [element for element in unitbox if element is not None]
-        infoTemp.append(unitbox)
-
-
-    info = infoTemp
-    for thing in info:
-        print(thing)
 
 if __name__ == "__main__":
     main()
