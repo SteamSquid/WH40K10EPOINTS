@@ -74,7 +74,6 @@ def main():
         for unitBox in pageInfo:
             tempBox = []
             for unit in unitBox:
-
                 tempUnit = []
 
                 if unit is not None and '.' in unit:
@@ -88,28 +87,13 @@ def main():
 
             infoTemp.append(tempBox)
 
-        
-
         pageInfo = infoTemp
-
-        """
         infoTemp = []
-
-        # Pretty up the units
-        for unitBox in pageInfo:
-            unitBox = [element for element in unitBox if element is not None]
-        infoTemp.append(unitBox)
-
-        print(infoTemp)
-        
-        book.append(infoTemp)
-        """
-
-        print(pageInfo)
-        
-
         book.append(pageInfo)
 
+    for page in book:
+        print(page)
+        print("\n\n")
     
     
 
