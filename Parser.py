@@ -1,7 +1,6 @@
 import pdfquery
 import xml.etree.ElementTree as ET
 import io
-import csv
 
 
 def main():
@@ -47,7 +46,7 @@ def main():
     #page = root[1][0]
     i = 0
 
-    for page in root[1:]:
+    for page in root[22:23]:
         page = page[0]
         pageInfo = []
 
@@ -91,10 +90,6 @@ def main():
         pageInfo = infoTemp
         infoTemp = []
         book.append(pageInfo)
-
-    with open('UnitBook.csv', 'w', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerows(book)
     
     
 
