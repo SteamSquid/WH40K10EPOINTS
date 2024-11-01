@@ -1,5 +1,6 @@
 from py_pdf_parser.loaders import load_file
 from py_pdf_parser.visualise import visualise
+from py_pdf_parser.components import ElementOrdering
 
 
 # The name of the MUNITORUM FIELD MANUAL
@@ -9,7 +10,11 @@ PDF_Name = "MunitionsManul.pdf"
 REGEX_SEARCH = "CODEX:*|INDEX:*"
 
 # Load the PDF into the parser
-document = load_file(PDF_Name)
+document = load_file(
+    PDF_Name
+#,
+#    element_ordering=ElementOrdering.TOP_TO_BOTTOM_LEFT_TO_RIGHT
+    )
 
 # Create an ElementList containing all the teams or whatever
 codexlist = document.elements.filter_by_regex(REGEX_SEARCH)
@@ -17,33 +22,27 @@ codexlist = document.elements.filter_by_regex(REGEX_SEARCH)
 # Tag all the headers as headers
 codexlist.add_tag_to_elements("Group Header")
 
-# Create an empty list for holding the sections in document
-sectionlist = []
-
 # Iterate over the headers to create sections
 for item in codexlist:
-    # Try to get the next item in the list
+    # Try to get the next item in the list. If we're at the end of the list, it throws an exception that we catch for branching
     try:
         nextitem = codexlist.move_forwards_from(item)
-    # If we're at the end of the list, it throws an exception. On execpt, get everything after the current item and then make that the last section
+    #On except, get everything after the current item and then make that the last section
     except:
         last_section = document.elements.after(item)
-        sectionlist.append(
-            document.sectioning.create_section(
-                name=item.text(),
-                start_element=item,
-                end_element=last_section[-1]
-                )
+        document.sectioning.create_section(
+            name=item.text(),
+            start_element=item,
+            end_element=last_section[-1]
             )
     else:
-        sectionlist.append(
-            document.sectioning.create_section(
-                name=item.text(),
-                start_element=item,
-                end_element=nextitem,
-                include_last_element=False
-                )
+        document.sectioning.create_section(
+            name=item.text(),
+            start_element=item,
+            end_element=nextitem,
+            include_last_element=False
             )
+
 
 # Display a visualization of the current parsed file after all changes/tags
 visualise(document)
