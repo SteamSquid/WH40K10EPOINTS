@@ -88,13 +88,37 @@ def main():
 
             infoTemp.append(tempBox)
 
+
+
         pageInfo = infoTemp
         infoTemp = []
         book.append(pageInfo)
+    #Print Book to test.
+    #for page in book:
+    #  print(page)
+    #  print("\n")
 
-    with open('UnitBook.csv', 'w', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerows(book)
+
+    #This has all Detachments and Enhancements Seperated from file
+    detachBox=[]
+    for page in book:
+        for unitBox in page:
+            if len(unitBox) == 9 and unitBox[0] != "Troupe ":
+                detachBox.append(page.pop(page.index(unitBox)))
+
+    
+
+    for unitBox in page:
+        print(unitBox)
+        print("\n")
+        #Print Book to test.
+    #for page in book:
+    #  print(page)
+    #  print("\n")
+    
+    #with open('UnitBook.csv', 'w', newline='') as file:
+    #    writer = csv.writer(file)
+    #    writer.writerows(book)
     
     
 
